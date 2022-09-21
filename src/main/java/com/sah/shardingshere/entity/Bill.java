@@ -2,6 +2,8 @@ package com.sah.shardingshere.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +13,9 @@ import java.util.Date;
  */
 @Data
 @TableName("t_bill")
-public class Bill {
+public class Bill implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Long orderId;
     private Integer userId;
     private Long addressId;
