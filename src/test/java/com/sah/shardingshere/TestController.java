@@ -1,5 +1,6 @@
 package com.sah.shardingshere;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sah.shardingshere.entity.Bill;
 import com.sah.shardingshere.entity.User;
@@ -41,20 +42,7 @@ class TestController {
     }
 
     @Test
-    public void testUserSave(){
-        List<User> userList = new ArrayList<>();
-        for (int i = 0 ; i< 10 ; i++){
-            User user = new User();
-            user.setUsername("admin");
-            user.setStatus("1");
-            user.setCreateTime((new Date(new DateTime(2022,(i % 11)+1,7,00, 00,00,000).getMillis())));
-            userList.add(user);
-        }
-        userService.saveBatch(userList);
-    }
-
-    @Test
-    public void testGetByOrderId(){
+    public void testGetBillByOrderId(){
         long id = 779036369388810241L; //根据数据修改，无数据会报错
         QueryWrapper<Bill> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("order_id", id);
@@ -63,7 +51,7 @@ class TestController {
     }
 
     @Test
-    public void testGetByDate(){
+    public void testGetBillByDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date date = sdf.parse("2022-02-07 00:00:00");
@@ -79,7 +67,7 @@ class TestController {
     }
 
     @Test
-    public void testGetByDate2(){
+    public void testGetBillByDate2(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date date = sdf.parse("2022-02-07 00:00:00");
@@ -94,9 +82,28 @@ class TestController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
+    //测试不分库查询用户表
+
+    @Test
+    public void testUserSave(){
+        List<User> userList = new ArrayList<>();
+        for (int i = 0 ; i< 10 ; i++){
+            User user = new User();
+            user.setUsername("admin");
+            user.setStatus("1");
+            user.setCreateTime((new Date(new DateTime(2022,(i % 11)+1,7,00, 00,00,000).getMillis())));
+            userList.add(user);
+        }
+        userService.saveBatch(userList);
+    }
+
+    @Test
+    public void testGetUser() {
+        List<User> list = userService.list();
+        System.out.println(JSONObject.toJSONString(list));
+    }
 
 }
 

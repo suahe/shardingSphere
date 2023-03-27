@@ -37,10 +37,10 @@ public class TableShardingAlgorithm implements PreciseShardingAlgorithm<Date>, R
         //根据日期分表
         Date date = shardingValue.getValue();
         String year = String.format("%tY", date);
-        String mon = String.valueOf(Integer.parseInt(String.format("%tm", date)));
+        String month = String.valueOf(Integer.parseInt(String.format("%tm", date)));
         //String dat = String.format("%td", date); //也可以安装年月日来分表
         // 选择表
-        tb_name = tb_name + year + "_" + mon;
+        tb_name = tb_name + year + "_" + month;
         //实际的表名
         log.info("tb_name:" + tb_name);
         for (String each : availableTargetNames) {
