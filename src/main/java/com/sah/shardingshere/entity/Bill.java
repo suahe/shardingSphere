@@ -17,8 +17,12 @@ public class Bill implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long orderId;
+
     private Integer userId;
+
     private Long addressId;
+
     private String status;
+
     private Date createTime;
 }
