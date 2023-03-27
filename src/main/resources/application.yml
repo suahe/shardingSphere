@@ -40,7 +40,7 @@ spring:
           algorithm-expression: ds$->{id % 2}
       tables:
         t_bill:
-          actual-data-nodes: ds$->{0..1}.t_bill_$->{2022..2022}_$->{1..12}
+          actual-data-nodes: ds$->{0..1}.t_bill_$->{2022..2022}_$->{01..12}
           #数据库分片字段
           database-strategy:
             standard:
@@ -53,6 +53,7 @@ spring:
               sharding-column: create_time
               #自定义表分片策略
               precise-algorithm-class-name: com.sah.shardingshere.config.TableShardingAlgorithm
+              range-algorithm-class-name: com.sah.shardingshere.config.TableShardingAlgorithm
           # 使用SNOWFLAKE算法生成主键
           key-generator:
             column: order_id

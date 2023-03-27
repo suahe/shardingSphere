@@ -30,6 +30,7 @@
         <jsqlparser.version>3.1</jsqlparser.version>
         <commons.version>2.6</commons.version>
         <fastjson.version>1.2.76</fastjson.version>
+        <hutool.version>5.3.8</hutool.version>
     </properties>
 
     <dependencies>
@@ -105,6 +106,12 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
+        </dependency>
+        <!-- hutool工具类-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

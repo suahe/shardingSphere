@@ -1,4 +1,4 @@
-CREATE TABLE `t_bill_2022_1` (
+CREATE TABLE `t_bill_2022_01` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',
@@ -7,7 +7,7 @@ CREATE TABLE `t_bill_2022_1` (
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `t_bill_2022_2` (
+CREATE TABLE `t_bill_2022_02` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',
@@ -16,7 +16,7 @@ CREATE TABLE `t_bill_2022_2` (
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `t_bill_2022_3` (
+CREATE TABLE `t_bill_2022_03` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',
@@ -25,7 +25,7 @@ CREATE TABLE `t_bill_2022_3` (
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `t_bill_2022_4` (
+CREATE TABLE `t_bill_2022_04` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',
@@ -35,7 +35,7 @@ CREATE TABLE `t_bill_2022_4` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-CREATE TABLE `t_bill_2022_5` (
+CREATE TABLE `t_bill_2022_05` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',
@@ -44,7 +44,7 @@ CREATE TABLE `t_bill_2022_5` (
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `t_bill_2022_6` (
+CREATE TABLE `t_bill_2022_06` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',
@@ -53,7 +53,7 @@ CREATE TABLE `t_bill_2022_6` (
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `t_bill_2022_7` (
+CREATE TABLE `t_bill_2022_07` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',
@@ -62,7 +62,7 @@ CREATE TABLE `t_bill_2022_7` (
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `t_bill_2022_8` (
+CREATE TABLE `t_bill_2022_08` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',
@@ -71,7 +71,7 @@ CREATE TABLE `t_bill_2022_8` (
   PRIMARY KEY (`order_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `t_bill_2022_9` (
+CREATE TABLE `t_bill_2022_09` (
   `order_id` bigint(20) NOT NULL  COMMENT '订单id',
   `user_id` int(20) NOT NULL COMMENT '用户id',
   `address_id` bigint(20) NOT NULL COMMENT '地址id',

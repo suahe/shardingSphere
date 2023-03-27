@@ -36,4 +36,5 @@ public class DBShardingAlgorithm implements PreciseShardingAlgorithm<Long> {
         }
         throw new IllegalArgumentException();
     }
+
 }

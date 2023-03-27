@@ -59,7 +59,7 @@ class TestController {
         QueryWrapper<Bill> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("order_id", id);
         Bill bill = billService.getOne(queryWrapper);
-        System.out.println(bill.toString());
+        System.out.println(bill != null? bill.toString(): "");
     }
 
     @Test
@@ -68,7 +68,7 @@ class TestController {
         try {
             Date date = sdf.parse("2022-02-07 00:00:00");
             QueryWrapper<Bill> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("create_time",date);
+            queryWrapper.le("create_time",date);
             List<Bill> billIPage = billService.list(queryWrapper);
             System.out.println(billIPage.size());
             System.out.println(billIPage.toString());
@@ -86,7 +86,7 @@ class TestController {
             Date date2 = sdf.parse("2022-03-07 00:00:00");
             QueryWrapper<Bill> queryWrapper = new QueryWrapper<>();
             queryWrapper.ge("create_time",date)
-                    .and(qw-> qw.le("create_time", date2));
+                    .le("create_time", date2);
             List<Bill> billIPage = billService.list(queryWrapper);
             System.out.println(billIPage.size());
             billIPage.forEach(System.out::println);
