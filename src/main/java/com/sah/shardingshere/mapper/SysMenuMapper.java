@@ -1,13 +1,13 @@
 package com.sah.shardingshere.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sah.shardingshere.entity.User;
+import com.sah.shardingshere.entity.SysMenu;
 
 /**
  * @author suahe
- * @date 2022/9/20
+ * @date 2023/3/28
  * @ApiNote
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
 }

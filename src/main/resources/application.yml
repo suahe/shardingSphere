@@ -1,5 +1,7 @@
 server:
   port: 8080
+  servlet:
+    context-path: /
   # 配置ds0 和ds1两个数据源
 spring:
   autoconfigure:
@@ -63,6 +65,19 @@ spring:
     props:
       sql:
         show: true
+# swagger配置
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
-mybatis:
-  mapper-locations: classpath:mapping/*.xml
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+      table-underline: true
+  configuration:
+    call-setters-on-nulls: true
+    ## sql开启，需要就开启，不需要就关闭
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

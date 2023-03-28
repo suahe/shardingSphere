@@ -2,7 +2,6 @@ package com.sah.shardingshere.entity;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sah.shardingshere.serializer.PrivacyEncrypt;
@@ -18,8 +17,8 @@ import java.util.Date;
  * @ApiNote
  */
 @Data
-@TableName("t_user")
-public class User implements Serializable {
+@TableName("sys_user")
+public class SysUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.ASSIGN_ID)
@@ -27,15 +26,25 @@ public class User implements Serializable {
 
     private String username;
 
+    @PrivacyEncrypt(type = PrivacyTypeEnum.PHONE)
+    private String telephone;
+
+    @PrivacyEncrypt(type = PrivacyTypeEnum.EMAIL)
+    private String mail;
+
+    private String password;
+
+    private String depId;
+
     private String status;
+
+    private String remark;
 
     private Date createTime;
 
-    @TableField(exist = false)
-    @PrivacyEncrypt(type = PrivacyTypeEnum.PHONE) // 隐藏手机号
-    private String phone;
+    private String createBy;
 
-    @TableField(exist = false)
-    @PrivacyEncrypt(type = PrivacyTypeEnum.EMAIL) // 隐藏邮箱
-    private String email;
+    private Date updateTime;
+
+    private String updateBy;
 }
