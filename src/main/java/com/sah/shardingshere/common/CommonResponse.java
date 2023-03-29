@@ -1,5 +1,7 @@
 package com.sah.shardingshere.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 /**
@@ -8,11 +10,6 @@ import java.io.Serializable;
  * @ApiNote
  */
 public class CommonResponse<T> implements Serializable {
-
-    /**
-     * 成功状态码
-     */
-    private final static String SUCCESS_CODE = "SUCCESS";
 
     /**
      * 提示信息
@@ -30,14 +27,12 @@ public class CommonResponse<T> implements Serializable {
     private Integer code;
 
     /**
-     * 状态
-     */
-    private Boolean state;
-
-    /**
      * 错误明细
      */
     private String detailMessage;
+
+    @JsonIgnore
+    private String logContent;
 
 
     /**
@@ -62,8 +57,18 @@ public class CommonResponse<T> implements Serializable {
         response.code = ResultCode.SUCCESS.getCode();
         response.data = data;
         response.message = "返回成功";
-        response.state = true;
         return response;
+    }
+
+    /**
+     * 错误
+     *
+     * @param message 自定义返回信息
+     * @param <T>     泛型
+     * @return 返回信息
+     */
+    public static <T> CommonResponse<T> error(String message) {
+        return error(ResultCode.COMMON_FAIL.getCode(), message, null);
     }
 
     /**
@@ -93,18 +98,8 @@ public class CommonResponse<T> implements Serializable {
         response.code = code;
         response.data = null;
         response.message = message;
-        response.state = false;
         response.detailMessage = detailMessage;
         return response;
-    }
-
-    public Boolean getState() {
-        return state;
-    }
-
-    public CommonResponse<T> setState(Boolean state) {
-        this.state = state;
-        return this;
     }
 
     public String getMessage() {
@@ -141,5 +136,13 @@ public class CommonResponse<T> implements Serializable {
     public CommonResponse<T> setDetailMessage(String detailMessage) {
         this.detailMessage = detailMessage;
         return this;
+    }
+
+    public String getLogContent() {
+        return logContent;
+    }
+
+    public void setLogContent(String logContent) {
+        this.logContent = logContent;
     }
 }

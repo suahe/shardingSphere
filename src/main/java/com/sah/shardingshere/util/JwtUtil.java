@@ -1,11 +1,16 @@
 package com.sah.shardingshere.util;
 
+import com.sah.shardingshere.common.CommonConstant;
+import com.sah.shardingshere.entity.SysUser;
+import com.sah.shardingshere.security.model.LoginDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
@@ -50,17 +55,17 @@ public class JwtUtil {
         return token;
     }
 
-    public static String createJWTToken(UserDetails userDetails, long timeToExpire) {
-        return createJWTToken(userDetails, timeToExpire,
+    public static String createJWTToken(LoginDTO loginDTO, long timeToExpire) {
+        return createJWTToken(loginDTO, timeToExpire,
                 new SecretKeySpec(ACCESS_TOKEN_KEY.getBytes(StandardCharsets.UTF_8), "HmacSHA512"));
     }
 
-    public static String createAccessToken(UserDetails userDetails) {
-        return createJWTToken(userDetails, ACCESS_TOKEN_EXPIRE_TIME);
+    public static String createAccessToken(LoginDTO loginDTO) {
+        return createJWTToken(loginDTO, ACCESS_TOKEN_EXPIRE_TIME);
     }
 
-    public static String createRefreshToken(UserDetails userDetails) {
-        return createJWTToken(userDetails, REFRESH_TOKEN_EXPIRE_TIME,
+    public static String createRefreshToken(LoginDTO loginDTO) {
+        return createJWTToken(loginDTO, REFRESH_TOKEN_EXPIRE_TIME,
                 new SecretKeySpec(REFRESH_TOKEN_KEY.getBytes(StandardCharsets.UTF_8), "HmacSHA512"));
     }
 
@@ -68,21 +73,25 @@ public class JwtUtil {
     /**
      * 根据用户信息生成一个 JWT
      *
-     * @param userDetails  用户信息
+     * @param loginDTO  用户信息
      * @param timeToExpire 毫秒单位的失效时间
      * @param signKey      签名使用的 key
      * @return JWT
      */
-    private static String createJWTToken(UserDetails userDetails, long timeToExpire,
+    private static String createJWTToken(LoginDTO loginDTO, long timeToExpire,
                                          Key signKey) {
         return Jwts
                 .builder()
                 //唯一ID
                 .setId(getUUID())
-                .setSubject(userDetails.getUsername())
+                .setSubject(loginDTO.getUsername())
+                .claim("userId", loginDTO.getUserId())
+                .claim("telephone", loginDTO.getTelephone())
+                .claim("depId", loginDTO.getDepId())
+                .claim("userId", loginDTO.getUserId())
                 //权限信息
                 .claim("authorities",
-                        userDetails.getAuthorities().stream()
+                        loginDTO.getAuthorities().stream()
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 //授权信息
@@ -136,4 +145,39 @@ public class JwtUtil {
         return false;
     }
 
+    /**
+     * 根据request中的token获取用户账号
+     *
+     * @return
+     */
+    public static LoginDTO getSysUserByToken() {
+        String accessToken = getToken();
+        if(StringUtils.isEmpty(accessToken)){
+            return null;
+        }
+        Optional<Claims> optional = parseAccessTokenClaims(accessToken);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        Claims claims = optional.get();
+        String subject = claims.getSubject();
+        String userId = claims.get("userId").toString();
+        String telephone = claims.get("phone").toString();
+        String depId = claims.get("depId").toString();
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setUsername(subject);
+        loginDTO.setUserId(userId);
+        loginDTO.setTelephone(telephone);
+        loginDTO.setDepId(depId);
+        return loginDTO;
+    }
+
+    public static String getToken() {
+        HttpServletRequest request = SpringContextUtil.getHttpServletRequest();
+        if(request==null){
+            return "";
+        }
+        String accessToken = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
+        return accessToken;
+    }
 }

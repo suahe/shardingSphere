@@ -1,5 +1,6 @@
 package com.sah.shardingshere.controller;
 
+import com.sah.shardingshere.aspect.annotation.AutoLog;
 import com.sah.shardingshere.common.CommonResponse;
 import com.sah.shardingshere.entity.SysUser;
 import com.sah.shardingshere.security.LoginService;
@@ -30,11 +31,12 @@ public class UserController {
     @Autowired
     private ISysUserService sysUserService;
 
+    @AutoLog("根据账号获取用户")
     @GetMapping("/getUser/{username}")
     @NotAuthentication
-    public SysUser getUser(@PathVariable("username") String username) {
+    public CommonResponse getUser(@PathVariable("username") String username) {
         SysUser sysUser = sysUserService.findByUsername(username);
-        return sysUser;
+        return CommonResponse.ok(sysUser);
     }
 
     @PreAuthorize("@ssc.hasPermission('sah:user:query')")
@@ -54,9 +56,9 @@ public class UserController {
     @PostMapping("/refresh")
     @NotAuthentication
     @ApiOperation("刷新refreshToken")
-    public CommonResponse<LoginVO> refreshToken(@RequestHeader(name = "token") String token,
+    public CommonResponse<LoginVO> refreshToken(@RequestHeader(name = "accessToken") String accessToken,
                                                 @RequestParam String refreshToken) {
-        return CommonResponse.ok(loginService.refreshToken(token, refreshToken));
+        return CommonResponse.ok(loginService.refreshToken(accessToken, refreshToken));
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package com.sah.shardingshere.config;
 
+import com.sah.shardingshere.common.CommonConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -48,7 +49,7 @@ public class SwaggerConfig {
     private List<Parameter> setHeaderToken() {
         List<Parameter> pars = new ArrayList<>();
         ParameterBuilder userId = new ParameterBuilder();
-        userId.name("token").description("用户TOKEN").modelRef(new ModelRef("string")).parameterType("header")
+        userId.name(CommonConstant.X_ACCESS_TOKEN).description("用户TOKEN").modelRef(new ModelRef("string")).parameterType("header")
                 .required(true).build();
         pars.add(userId.build());
         return pars;

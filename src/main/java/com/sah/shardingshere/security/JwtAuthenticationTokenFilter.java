@@ -1,5 +1,6 @@
 package com.sah.shardingshere.security;
 
+import com.sah.shardingshere.common.CommonConstant;
 import com.sah.shardingshere.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -61,7 +62,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     }
 
     private Optional<Claims> validateToken(HttpServletRequest req) {
-        String jwtToken = req.getHeader("token");
+        String jwtToken = req.getHeader(CommonConstant.X_ACCESS_TOKEN);
         try {
             return JwtUtil.parseAccessTokenClaims(jwtToken);
         } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
@@ -71,7 +72,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     }
 
     private boolean checkJWTToken(HttpServletRequest request) {
-        String authenticationHeader = request.getHeader("token");
+        String authenticationHeader = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
         return authenticationHeader != null;
     }
 }

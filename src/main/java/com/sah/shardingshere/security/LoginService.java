@@ -1,10 +1,13 @@
 package com.sah.shardingshere.security;
 
+import com.sah.shardingshere.entity.SysUser;
 import com.sah.shardingshere.security.model.AuthUser;
 import com.sah.shardingshere.security.model.LoginDTO;
 import com.sah.shardingshere.security.model.LoginVO;
+import com.sah.shardingshere.service.ISysUserService;
 import com.sah.shardingshere.util.JwtUtil;
 import io.jsonwebtoken.Claims;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -23,12 +26,14 @@ import java.util.Optional;
 @Service
 public class LoginService {
 
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private AuthUserService authUserService;
+
+    @Autowired
+    private ISysUserService sysUserService;
 
 
     public LoginVO login(LoginDTO loginDTO) {
@@ -45,12 +50,11 @@ public class LoginService {
         }
         //登录成功以后用户信息、
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
-
+        loginDTO.setAuthorities(authUser.getAuthorities());
         LoginVO loginVO = new LoginVO();
         loginVO.setUserName(authUser.getUsername());
-        loginVO.setAccessToken(JwtUtil.createAccessToken(authUser));
-        loginVO.setRefreshToken(JwtUtil.createRefreshToken(authUser));
-
+        loginVO.setAccessToken(JwtUtil.createAccessToken(loginDTO));
+        loginVO.setRefreshToken(JwtUtil.createRefreshToken(loginDTO));
         return loginVO;
     }
 
@@ -63,10 +67,18 @@ public class LoginService {
         if (userName.isPresent()) {
             AuthUser authUser = (AuthUser) authUserService.loadUserByUsername(userName.get());
             if (Objects.nonNull(authUser)) {
+                SysUser sysUser = sysUserService.findByUsername(authUser.getUsername());
+                if (Objects.nonNull(sysUser)) {
+                    throw new InternalAuthenticationServiceException("用户不存在");
+                }
+                LoginDTO loginDTO = new LoginDTO();
+                BeanUtils.copyProperties(loginDTO, sysUser);
+                loginDTO.setUserId(sysUser.getId());
+                loginDTO.setAuthorities(authUser.getAuthorities());
                 LoginVO loginVO = new LoginVO();
                 loginVO.setUserName(authUser.getUsername());
-                loginVO.setAccessToken(JwtUtil.createAccessToken(authUser));
-                loginVO.setRefreshToken(JwtUtil.createRefreshToken(authUser));
+                loginVO.setAccessToken(JwtUtil.createAccessToken(loginDTO));
+                loginVO.setRefreshToken(JwtUtil.createRefreshToken(loginDTO));
                 return loginVO;
             }
             throw new InternalAuthenticationServiceException("用户不存在");
