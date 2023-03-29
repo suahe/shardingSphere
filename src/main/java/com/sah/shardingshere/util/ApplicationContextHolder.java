@@ -1,4 +1,4 @@
-package utils;
+package com.sah.shardingshere.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
