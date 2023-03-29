@@ -10,5 +10,11 @@ import com.sah.shardingshere.entity.SysUser;
  */
 public interface ISysUserService extends IService<SysUser> {
 
+    /**
+     * 根据账号查询用户
+     *
+     * @param username
+     * @return
+     */
     SysUser findByUsername(String username);
 }

@@ -13,5 +13,11 @@ import java.util.List;
  */
 public interface ISysMenuService extends IService<SysMenu> {
 
+    /**
+     * 根据角色ID集合查询菜单列表
+     *
+     * @param roleIds
+     * @return
+     */
     List<SysMenu> queryByRoleIds(List<String> roleIds);
 }
