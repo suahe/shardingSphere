@@ -6,14 +6,13 @@ import com.sah.shardingshere.security.LoginService;
 import com.sah.shardingshere.security.NotAuthentication;
 import com.sah.shardingshere.security.model.LoginDTO;
 import com.sah.shardingshere.security.model.LoginVO;
+import com.sah.shardingshere.service.ISysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 /**
  * @author suahe
@@ -28,28 +27,26 @@ public class UserController {
     @Autowired
     private LoginService loginService;
 
-    @GetMapping("/getUser")
+    @Autowired
+    private ISysUserService sysUserService;
+
+    @GetMapping("/getUser/{username}")
     @NotAuthentication
-    public SysUser getUser() {
-        SysUser user = new SysUser();
-        user.setUsername("test");
-        user.setStatus("1");
-        user.setCreateTime(new Date());
-        user.setMail("1054599027@qq.com");
-        user.setTelephone("15659851606");
-        return user;
+    public SysUser getUser(@PathVariable("username") String username) {
+        SysUser sysUser = sysUserService.findByUsername(username);
+        return sysUser;
     }
 
     @PreAuthorize("@ssc.hasPermission('sah:user:query')")
     @PostMapping("/helloWord")
-    public String hellWord(){
+    public String hellWord() {
         return "hello word";
     }
 
     @PostMapping("/login")
     @NotAuthentication
     @ApiOperation("登录")
-    public CommonResponse<LoginVO> login(@RequestBody LoginDTO dto){
+    public CommonResponse<LoginVO> login(@RequestBody LoginDTO dto) {
         return CommonResponse.ok(loginService.login(dto));
     }
 
@@ -58,8 +55,8 @@ public class UserController {
     @NotAuthentication
     @ApiOperation("刷新refreshToken")
     public CommonResponse<LoginVO> refreshToken(@RequestHeader(name = "token") String token,
-                                        @RequestParam String refreshToken){
-        return CommonResponse.ok(loginService.refreshToken(token,refreshToken));
+                                                @RequestParam String refreshToken) {
+        return CommonResponse.ok(loginService.refreshToken(token, refreshToken));
     }
 
     public static void main(String[] args) {

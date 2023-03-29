@@ -3,6 +3,8 @@ package com.sah.shardingshere.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sah.shardingshere.entity.SysRole;
 
+import java.util.List;
+
 /**
  * @author suahe
  * @date 2023/3/28
@@ -10,4 +12,5 @@ import com.sah.shardingshere.entity.SysRole;
  */
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 
+    List<SysRole> queryByUserId(String userId);
 }

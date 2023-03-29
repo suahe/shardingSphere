@@ -53,10 +53,6 @@
 			<onMatch>ACCEPT</onMatch>
 		</filter>
 	</appender>
-	<logger name="org" level="INFO"/>
-	<logger name="c.l.license.client" level="INFO"/>
-	<logger name="com.alibaba" level="INFO"/>
-	<logger name="io.netty" level="INFO"/>
 
 	<root level="${logLevel}">
 		<appender-ref ref="CONSOLE" />

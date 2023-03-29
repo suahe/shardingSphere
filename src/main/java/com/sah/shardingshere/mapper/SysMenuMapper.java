@@ -2,6 +2,9 @@ package com.sah.shardingshere.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sah.shardingshere.entity.SysMenu;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author suahe
@@ -10,4 +13,5 @@ import com.sah.shardingshere.entity.SysMenu;
  */
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
+    List<SysMenu> queryByRoleIds(@Param("roleIds") List<String> roleIds);
 }
