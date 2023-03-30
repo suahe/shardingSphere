@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.connection.PoolException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -27,15 +26,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BusinessException.class)
     public CommonResponse<?> handleRRException(BusinessException e) {
-        log.error(e.getMessage(), e);
-        return CommonResponse.error(e.getMessage());
-    }
-
-    /**
-     * 处理登陆异常
-     */
-    @ExceptionHandler(LoginException.class)
-    public CommonResponse<?> handleAppLoginException(LoginException e) {
         log.error(e.getMessage(), e);
         return CommonResponse.error(e.getMessage());
     }

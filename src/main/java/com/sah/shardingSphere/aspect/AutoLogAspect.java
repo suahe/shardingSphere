@@ -14,6 +14,7 @@ import com.sah.shardingSphere.util.JwtUtil;
 import com.sah.shardingSphere.util.SpringContextUtil;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.parsing.GenericTokenParser;
 import org.apache.ibatis.reflection.MetaObject;
@@ -33,6 +34,8 @@ import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;
@@ -46,6 +49,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @email jeecgos@163.com
  * @Date 2018年1月14日
  */
+@Slf4j
 @Aspect
 @Component
 public class AutoLogAspect {
@@ -63,14 +67,23 @@ public class AutoLogAspect {
     @Around("logPointCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         long beginTime = System.currentTimeMillis();
-        //执行方法
-        Object result = point.proceed();
-        //执行时长(毫秒)
-        long time = System.currentTimeMillis() - beginTime;
+        Object result = null;
+        Object responseRes = null;
+        try {
+            //执行方法
+            result = point.proceed();
+            responseRes = result;
+        } catch (Exception e) {
+            log.error("method execute error:{}", e.getMessage());
+            responseRes = getStackTraceMessage(e);
+            throw e;
+        } finally {
+            //执行时长(毫秒)
+            long time = System.currentTimeMillis() - beginTime;
 
-        //保存日志
-        saveSysLog(point, time, result);
-
+            //保存日志
+            saveSysLog(point, time, responseRes);
+        }
         return result;
     }
 
@@ -294,6 +307,18 @@ public class AutoLogAspect {
             }
         }
         return content;
+    }
+
+    private static String getStackTraceMessage(Exception e) {
+        try (StringWriter sw = new StringWriter();
+             PrintWriter pw = new PrintWriter(sw);){
+            e.printStackTrace(pw);
+            pw.flush();
+            sw.flush();
+            return sw.toString();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     @Getter

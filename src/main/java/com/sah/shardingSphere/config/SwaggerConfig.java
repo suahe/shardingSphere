@@ -29,13 +29,13 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("com.sah.shardingshere.controller")).paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.sah.shardingSphere.controller")).paths(PathSelectors.any())
                 .build().globalOperationParameters(setHeaderToken());
 
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("action-swagger").description("swagger实战").termsOfServiceUrl("")
+        return new ApiInfoBuilder().title("shardingSphere接口文档").description("swagger实战").termsOfServiceUrl("")
                 .version("1.0").build();
     }
 
