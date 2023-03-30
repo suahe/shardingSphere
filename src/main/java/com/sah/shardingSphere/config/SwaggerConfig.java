@@ -9,6 +9,7 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -35,8 +36,13 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("shardingSphere接口文档").description("swagger实战").termsOfServiceUrl("")
-                .version("1.0").build();
+        return new ApiInfoBuilder()
+                .title("shardingSphere接口文档")
+                .description("swagger实战")
+                .termsOfServiceUrl("")
+                //作者信息、联系方式：Contact(String name, String url, String email)
+                .contact(new Contact("sah","","1054599027@qq.com"))
+                .version("1.0.0").build();
     }
 
     /**
