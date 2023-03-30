@@ -1,6 +1,8 @@
 package com.sah.shardingSphere.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
@@ -9,26 +11,31 @@ import java.io.Serializable;
  * @date 2023/3/28
  * @ApiNote
  */
+@ApiModel("响应实体")
 public class CommonResponse<T> implements Serializable {
 
     /**
      * 提示信息
      */
+    @ApiModelProperty("提示信息")
     private String message;
 
     /**
      * 返回数据
      */
+    @ApiModelProperty("返回数据")
     private T data;
 
     /**
      * 状态码
      */
+    @ApiModelProperty("状态码")
     private Integer code;
 
     /**
      * 错误明细
      */
+    @ApiModelProperty("详细信息")
     private String detailMessage;
 
     @JsonIgnore

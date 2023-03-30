@@ -8,8 +8,7 @@ import com.sah.shardingSphere.security.NotAuthentication;
 import com.sah.shardingSphere.security.model.LoginDTO;
 import com.sah.shardingSphere.security.model.LoginVO;
 import com.sah.shardingSphere.service.ISysUserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,20 +33,22 @@ public class UserController {
     @AutoLog("根据账号获取用户")
     @GetMapping("/getUser/{username}")
     @NotAuthentication
-    public CommonResponse getUser(@PathVariable("username") String username) {
+    @ApiOperation(value="用户接口-获取用户信息")
+    public CommonResponse getUser(@ApiParam(name = "账号", value = "username", required = true) @PathVariable("username") String username) {
         SysUser sysUser = sysUserService.findByUsername(username);
         return CommonResponse.ok(sysUser);
     }
 
     @PreAuthorize("@ssc.hasPermission('sah:user:query')")
     @PostMapping("/helloWord")
+    @ApiOperation(value="用户接口-测试权限")
     public String hellWord() {
         return "hello word";
     }
 
     @PostMapping("/login")
     @NotAuthentication
-    @ApiOperation("登录")
+    @ApiOperation("用户接口-登录")
     public CommonResponse<LoginVO> login(@RequestBody LoginDTO dto) {
         return CommonResponse.ok(loginService.login(dto));
     }
@@ -55,9 +56,13 @@ public class UserController {
 
     @PostMapping("/refresh")
     @NotAuthentication
-    @ApiOperation("刷新refreshToken")
+    @ApiOperation("用户接口-刷新refreshToken")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "accessToken", value = "accessToken", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "refreshToken", value = "refreshToken", required = true, dataType = "String", paramType = "query"),
+    })
     public CommonResponse<LoginVO> refreshToken(@RequestHeader(name = "accessToken") String accessToken,
-                                                @RequestParam String refreshToken) {
+                                                @RequestParam("refreshToken") String refreshToken) {
         return CommonResponse.ok(loginService.refreshToken(accessToken, refreshToken));
     }
 

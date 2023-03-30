@@ -54,7 +54,7 @@ public class LoginService {
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
         loginDTO.setAuthorities(authUser.getAuthorities());
         LoginVO loginVO = new LoginVO();
-        loginVO.setUserName(authUser.getUsername());
+        loginVO.setUsername(authUser.getUsername());
         loginVO.setAccessToken(JwtUtil.createAccessToken(loginDTO));
         loginVO.setRefreshToken(JwtUtil.createRefreshToken(loginDTO));
         return loginVO;
@@ -78,7 +78,7 @@ public class LoginService {
                 loginDTO.setUserId(sysUser.getId());
                 loginDTO.setAuthorities(authUser.getAuthorities());
                 LoginVO loginVO = new LoginVO();
-                loginVO.setUserName(authUser.getUsername());
+                loginVO.setUsername(authUser.getUsername());
                 loginVO.setAccessToken(JwtUtil.createAccessToken(loginDTO));
                 loginVO.setRefreshToken(JwtUtil.createRefreshToken(loginDTO));
                 return loginVO;

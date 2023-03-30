@@ -1,5 +1,7 @@
 package com.sah.shardingSphere.security.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,12 +12,16 @@ import java.io.Serializable;
  * @ApiNote
  */
 @Data
+@ApiModel("登录实体")
 public class LoginVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("accessToken")
     private String accessToken;
 
+    @ApiModelProperty("refreshToken")
     private String refreshToken;
 
-    private String userName;
+    @ApiModelProperty("账号")
+    private String username;
 }
