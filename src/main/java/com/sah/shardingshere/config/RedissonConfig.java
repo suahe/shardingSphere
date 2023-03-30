@@ -39,7 +39,8 @@ public class RedissonConfig {
     public RedissonClient redissonClient() {
         //1、创建配置
         Config config = new Config();
-
+        //设置集群方式
+        //config.useClusterServers().addNodeAddress()
         host = host.startsWith(hostPrefix) ? host : hostPrefix + host;
         SingleServerConfig serverConfig = config.useSingleServer()
                 .setAddress(host + ":" + port)
