@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ShardingSphereController {
 
     @Autowired
@@ -56,7 +56,7 @@ class ShardingSphereController {
         try {
             Date date = sdf.parse("2022-02-07 00:00:00");
             QueryWrapper<Bill> queryWrapper = new QueryWrapper<>();
-            queryWrapper.le("create_time", date);
+            queryWrapper.eq("create_time", date);
             List<Bill> billIPage = billService.list(queryWrapper);
             System.out.println(billIPage.size());
             System.out.println(billIPage.toString());

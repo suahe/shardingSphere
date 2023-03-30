@@ -64,12 +64,7 @@ public class TableShardingAlgorithm implements PreciseShardingAlgorithm<Date>, R
         Date upperDate = valueRange.upperEndpoint();
         //获取分片键的日期格式为"2020_12"
         String lowerSuffix = DateUtil.format(lowerDate, YYYY_MM);
-        String upperSuffix;
-        if (upperDate != null) {
-            upperSuffix = DateUtil.format(upperDate, YYYY_MM);
-        } else {
-            upperSuffix = DateUtil.format(new Date(), YYYY_MM);
-        }
+        String upperSuffix = DateUtil.format(upperDate, YYYY_MM);;
         Set<String> suffixList = getSuffixListForRange(lowerSuffix, upperSuffix);
         for (String tableName : availableTargetNames) {
             if (containTableName(suffixList, tableName)) {
