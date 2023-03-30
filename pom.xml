@@ -6,13 +6,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.5.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.sah</groupId>
-    <artifactId>shardingshereDemo</artifactId>
+    <artifactId>ShardingSphereDemo</artifactId>
     <version>1.0.0</version>
-    <name>shardingshereDemo</name>
-    <description>shardingshere project for Spring Boot</description>
+    <name>ShardingSphereDemo</name>
+    <description>ShardingSphereDemo</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,6 +35,8 @@
         <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
         <guava.version>22.0</guava.version>
         <skywalking.version>8.3.0</skywalking.version>
+        <redisson.version>3.13.6</redisson.version>
+        <jedis.version>3.3.0</jedis.version>
     </properties>
 
     <dependencies>
@@ -176,16 +177,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <!-- springboot整合redis -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
         <!-- springboot整合redisson -->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson-spring-boot-starter</artifactId>
-            <version>3.13.6</version>
+            <version>${redisson.version}</version>
+        </dependency>
+        <!--redis依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+        </dependency>
+        <!-- websocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
         <dependency>

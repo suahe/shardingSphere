@@ -50,14 +50,14 @@ spring:
             standard:
               sharding-column: order_id
               #自定义数据库分片策略
-              precise-algorithm-class-name: com.sah.shardingshere.config.DBShardingAlgorithm
+              precise-algorithm-class-name: com.sah.shardingSphere.config.DBShardingAlgorithm
           #表分片字段
           table-strategy:
             standard:
               sharding-column: create_time
               #自定义表分片策略
-              precise-algorithm-class-name: com.sah.shardingshere.config.TableShardingAlgorithm
-              range-algorithm-class-name: com.sah.shardingshere.config.TableShardingAlgorithm
+              precise-algorithm-class-name: com.sah.shardingSphere.config.TableShardingAlgorithm
+              range-algorithm-class-name: com.sah.shardingSphere.config.TableShardingAlgorithm
           # 使用SNOWFLAKE算法生成主键
           key-generator:
             column: order_id
@@ -68,13 +68,20 @@ spring:
       sql:
         show: true
 
-  # redis 配置
+  #redis 配置
   redis:
-    host: 127.0.0.1
     password:
-    port: 6379
-    database: 1
-    timeout: 30000
+#    cluster:
+#      nodes: 172.16.252.117:9001,172.16.252.118:9001,172.16.252.119:9001,172.16.252.123:9001,172.16.252.124:9001,172.16.252.125:9001
+    host: 127.0.0.1:6379
+    # 连接超时时间（毫秒）
+    timeout: 2000
+    jedis:
+      pool:
+        maxActive: 50
+        maxIdle: 30
+        minIdle: 5
+        max-wait: 3000
 
 # swagger配置
   mvc:
@@ -98,5 +105,13 @@ mybatis-plus:
 logging:
   config: classpath:logback-level.xml
   level:
-    com.sah.shardingshere.mapper: info
+    com.sah.shardingSphere.mapper: info
 logLevel: info
+
+
+common:
+  redisson:
+    address: 127.0.0.1:6379
+    password:
+    type: STANDALONE
+    enabled: true
