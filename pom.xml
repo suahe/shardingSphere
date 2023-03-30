@@ -212,6 +212,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!-- 导出swagger2接口文档插件 start -->
             <!--项目路径下cmd使用命令mvn swagger2markup:convertSwagger2markup生成md文件-->
             <plugin>
                 <groupId>org.asciidoctor</groupId>
@@ -252,6 +253,7 @@
                     </config>
                 </configuration>
             </plugin>
+            <!-- 导出swagger2接口文档插件 end -->
         </plugins>
     </build>
 
