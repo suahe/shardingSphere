@@ -3,6 +3,7 @@ package com.sah.shardingSphere.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sah.shardingSphere.entity.SysUser;
+import com.sah.shardingSphere.lock.annotation.JLock;
 import com.sah.shardingSphere.mapper.SysUserMapper;
 import com.sah.shardingSphere.service.ISysUserService;
 import org.springframework.stereotype.Service;

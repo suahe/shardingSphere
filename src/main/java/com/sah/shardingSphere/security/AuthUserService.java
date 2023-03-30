@@ -3,6 +3,7 @@ package com.sah.shardingSphere.security;
 import com.sah.shardingSphere.entity.SysMenu;
 import com.sah.shardingSphere.entity.SysRole;
 import com.sah.shardingSphere.entity.SysUser;
+import com.sah.shardingSphere.exception.LoginAuthException;
 import com.sah.shardingSphere.security.model.AuthUser;
 import com.sah.shardingSphere.service.ISysMenuService;
 import com.sah.shardingSphere.service.ISysRoleService;
@@ -41,10 +42,10 @@ public class AuthUserService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         SysUser sysUser = sysUserService.findByUsername(username);
         if (sysUser == null) {
-            throw new UsernameNotFoundException("未找到用户名");
+            throw new LoginAuthException("未找到用户名");
         }
         List<SysRole> roles = sysRoleService.queryByUserId(sysUser.getId());
         Set<String> dbAuthsSet = new HashSet<>();

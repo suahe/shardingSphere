@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ShardingSphereController {
+class ShardingSphereTest {
 
     @Autowired
     private IBillService billService;

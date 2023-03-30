@@ -1,5 +1,6 @@
 package com.sah.shardingSphere.lock.aspect;
 
+import com.sah.shardingSphere.exception.LockException;
 import com.sah.shardingSphere.lock.annotation.JLock;
 import com.sah.shardingSphere.lock.enums.LockModel;
 import lombok.SneakyThrows;
@@ -83,14 +84,14 @@ public class DistributedLockHandler extends BaseAspect{
     private RLock getLock(ProceedingJoinPoint joinPoint, JLock jLock) {
         String[] keys = jLock.lockKey();
         if (keys.length == 0) {
-            throw new RuntimeException("keys不能为空");
+            throw new LockException("keys不能为空");
         }
         String[] parameterNames = new LocalVariableTableParameterNameDiscoverer().getParameterNames(((MethodSignature) joinPoint.getSignature()).getMethod());
         Object[] args = joinPoint.getArgs();
 
         LockModel lockModel = jLock.lockModel();
         if (!lockModel.equals(LockModel.MULTIPLE) && !lockModel.equals(LockModel.REDLOCK) && keys.length > 1) {
-            throw new RuntimeException("参数有多个,锁模式为->" + lockModel.name() + ".无法锁定");
+            throw new LockException("参数有多个,锁模式为->" + lockModel.name() + ".无法锁定");
         }
         RLock rLock = null;
         String keyConstant = jLock.keyConstant();

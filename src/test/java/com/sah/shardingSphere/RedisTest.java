@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @ApiNote
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RedisController {
+public class RedisTest {
 
     @Autowired
     private RedisUtil redisUtil;
@@ -24,6 +24,10 @@ public class RedisController {
             String str = (String) redisUtil.get(key);
             System.out.println(str);
         }
+    }
+
+
+    public void redissonAnnotationTest() {
 
     }
 }

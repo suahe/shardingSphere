@@ -49,19 +49,22 @@ public class RedissonLockClient {
      */
     public boolean tryLock(String lockName, long waitTime, long expireSeconds) {
         RLock rLock = getLock(lockName);
-        boolean getLock = false;
-        try {
-            getLock = rLock.tryLock(waitTime, expireSeconds, TimeUnit.SECONDS);
-            if (getLock) {
-                log.info("获取锁成功,lockName={}", lockName);
-            } else {
-                log.info("获取锁失败,lockName={}", lockName);
+        if (!rLock.isLocked()) {
+            try {
+                boolean getLock = rLock.tryLock(waitTime, expireSeconds, TimeUnit.SECONDS);
+                if (getLock) {
+                    log.info("获取锁成功,lockName={}", lockName);
+                } else {
+                    log.info("获取锁失败,lockName={}", lockName);
+                }
+                return getLock;
+            } catch (InterruptedException e) {
+                log.error("获取式锁异常，lockName=" + lockName, e);
+                Thread.currentThread().interrupt();
+                return false;
             }
-        } catch (InterruptedException e) {
-            log.error("获取式锁异常，lockName=" + lockName, e);
-            Thread.currentThread().interrupt();
         }
-        return getLock;
+        return false;
     }
 
 
@@ -84,6 +87,7 @@ public class RedissonLockClient {
     public boolean existKey(String key) {
         return redisTemplate.hasKey(key);
     }
+
     /**
      * 锁lockKey
      *
@@ -117,11 +121,12 @@ public class RedissonLockClient {
      */
     public void unlock(String lockName) {
         try {
-            redissonClient.getLock(lockName).unlock();
+            RLock lock = redissonClient.getLock(lockName);
+            if (lock.isLocked()) {
+                lock.unlock();
+            }
         } catch (Exception e) {
             log.error("解锁异常，lockName=" + lockName, e);
         }
     }
-
-
 }

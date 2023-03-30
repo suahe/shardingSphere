@@ -1,6 +1,7 @@
 package com.sah.shardingSphere.security;
 
 import com.sah.shardingSphere.entity.SysUser;
+import com.sah.shardingSphere.exception.LoginAuthException;
 import com.sah.shardingSphere.security.model.AuthUser;
 import com.sah.shardingSphere.security.model.LoginDTO;
 import com.sah.shardingSphere.security.model.LoginVO;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.LoginException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,7 +48,7 @@ public class LoginService {
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
         if (authentication == null) {
-            throw new RuntimeException("用户名或密码错误");
+            throw new LoginAuthException("用户名或密码错误");
         }
         //登录成功以后用户信息、
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
@@ -61,7 +63,7 @@ public class LoginService {
 
     public LoginVO refreshToken(String accessToken, String refreshToken) {
         if (!JwtUtil.validateRefreshToken(refreshToken) && !JwtUtil.validateWithoutExpiration(accessToken)) {
-            throw new RuntimeException("认证失败");
+            throw new LoginAuthException("认证失败");
         }
         Optional<String> userName = JwtUtil.parseRefreshTokenClaims(refreshToken).map(Claims::getSubject);
         if (userName.isPresent()) {
@@ -69,7 +71,7 @@ public class LoginService {
             if (Objects.nonNull(authUser)) {
                 SysUser sysUser = sysUserService.findByUsername(authUser.getUsername());
                 if (Objects.nonNull(sysUser)) {
-                    throw new InternalAuthenticationServiceException("用户不存在");
+                    throw new LoginAuthException("用户不存在");
                 }
                 LoginDTO loginDTO = new LoginDTO();
                 BeanUtils.copyProperties(loginDTO, sysUser);
@@ -81,8 +83,8 @@ public class LoginService {
                 loginVO.setRefreshToken(JwtUtil.createRefreshToken(loginDTO));
                 return loginVO;
             }
-            throw new InternalAuthenticationServiceException("用户不存在");
+            throw new LoginAuthException("用户不存在");
         }
-        throw new RuntimeException("认证失败");
+        throw new LoginAuthException("认证失败");
     }
 }
