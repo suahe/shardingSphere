@@ -136,7 +136,7 @@ public class AutoLogAspect {
         //设置IP地址
         dto.setIp(IPUtil.getIpAddr(request));
         //获取登录用户信息
-        LoginDTO loginDTO = JwtUtil.getSysUserByToken();
+        LoginDTO loginDTO = JwtUtil.getLoginUserByToken();
         if (loginDTO != null) {
             dto.setUserId(loginDTO.getUserId());
             dto.setUsername(loginDTO.getUsername());

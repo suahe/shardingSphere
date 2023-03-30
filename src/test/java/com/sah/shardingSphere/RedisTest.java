@@ -25,9 +25,4 @@ public class RedisTest {
             System.out.println(str);
         }
     }
-
-
-    public void redissonAnnotationTest() {
-
-    }
 }

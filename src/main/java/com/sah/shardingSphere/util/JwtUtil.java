@@ -148,7 +148,7 @@ public class JwtUtil {
      *
      * @return
      */
-    public static LoginDTO getSysUserByToken() {
+    public static LoginDTO getLoginUserByToken() {
         String accessToken = getToken();
         if(StringUtils.isEmpty(accessToken)){
             return null;

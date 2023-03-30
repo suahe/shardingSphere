@@ -9,10 +9,24 @@ import com.sah.shardingSphere.security.model.LoginDTO;
 import com.sah.shardingSphere.security.model.LoginVO;
 import com.sah.shardingSphere.service.ISysUserService;
 import io.swagger.annotations.*;
+import org.jeecgframework.poi.excel.ExcelImportUtil;
+import org.jeecgframework.poi.excel.entity.ImportParams;
+import org.jeecgframework.poi.excel.entity.params.ExcelExportEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author suahe
@@ -22,20 +36,17 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "用户接口", tags = "用户接口")
 @RequestMapping("/user")
 @RestController
-public class UserController {
+public class UserController extends BaseController<SysUser, ISysUserService>{
 
     @Autowired
     private LoginService loginService;
-
-    @Autowired
-    private ISysUserService sysUserService;
 
     @AutoLog("根据账号获取用户")
     @GetMapping("/getUser/{username}")
     @NotAuthentication
     @ApiOperation(value="用户接口-获取用户信息")
     public CommonResponse getUser(@ApiParam(name = "账号", value = "username", required = true) @PathVariable("username") String username) {
-        SysUser sysUser = sysUserService.findByUsername(username);
+        SysUser sysUser = baseService.findByUsername(username);
         return CommonResponse.ok(sysUser);
     }
 
@@ -64,6 +75,36 @@ public class UserController {
     public CommonResponse<LoginVO> refreshToken(@RequestHeader(name = "accessToken") String accessToken,
                                                 @RequestParam("refreshToken") String refreshToken) {
         return CommonResponse.ok(loginService.refreshToken(accessToken, refreshToken));
+    }
+
+    @PostMapping(value = "/importExcel")
+    @ApiOperation(value = "导入用户数据Excel")
+    @NotAuthentication
+    public CommonResponse<?> importExcel(HttpServletRequest request) {
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+            MultipartFile file = entity.getValue();
+            ImportParams params = new ImportParams();
+            params.setTitleRows(2);
+            params.setHeadRows(1);
+            params.setNeedSave(true);
+            try (InputStream inputStream = file.getInputStream()) {
+                List<SysUser> userList = ExcelImportUtil.importExcel(inputStream, SysUser.class, params);
+                return CommonResponse.ok();
+            } catch (Exception e) {
+                return CommonResponse.error("File import failure:" + e.getMessage());
+            }
+        }
+        return CommonResponse.error("File import failure");
+    }
+
+    @ApiOperation(value = "导出用户数据Excel")
+    @GetMapping(value = "/exportXls")
+    @NotAuthentication
+    public ModelAndView exportXls(HttpServletRequest request) {
+        List<SysUser> userList = baseService.list();
+        return super.exportEntityXls("用户数据", SysUser.class, userList);
     }
 
     public static void main(String[] args) {
