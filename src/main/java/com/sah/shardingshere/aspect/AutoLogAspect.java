@@ -6,7 +6,6 @@ import com.sah.shardingshere.aspect.annotation.AutoLog;
 import com.sah.shardingshere.common.CommonConstant;
 import com.sah.shardingshere.common.CommonResponse;
 import com.sah.shardingshere.entity.SysLog;
-import com.sah.shardingshere.entity.SysUser;
 import com.sah.shardingshere.enums.ModuleType;
 import com.sah.shardingshere.security.model.LoginDTO;
 import com.sah.shardingshere.service.ISysLogService;
