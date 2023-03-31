@@ -8,10 +8,10 @@
         <version>2.5.3</version>
     </parent>
     <groupId>com.sah</groupId>
-    <artifactId>ShardingSphereDemo</artifactId>
+    <artifactId>ShardingSphere</artifactId>
     <version>1.0.0</version>
-    <name>ShardingSphereDemo</name>
-    <description>ShardingSphereDemo</description>
+    <name>ShardingSphere</name>
+    <description>ShardingSphere</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
