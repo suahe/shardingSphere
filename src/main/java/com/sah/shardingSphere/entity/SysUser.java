@@ -10,9 +10,13 @@ import com.sah.shardingSphere.serializer.PrivacyTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -31,15 +35,18 @@ public class SysUser implements Serializable {
     @ApiModelProperty("主键")
     private String id;
 
+    @NotNull
     @Excel(name = "账号", width = 20, orderNum = "0")
     @ApiModelProperty("账号")
     private String username;
 
+    @Pattern(regexp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$", message = "手机号格式有误")
     @PrivacyEncrypt(type = PrivacyTypeEnum.PHONE)
     @Excel(name = "手机号", width = 20, orderNum = "1")
     @ApiModelProperty("手机号")
     private String telephone;
 
+    @Email
     @PrivacyEncrypt(type = PrivacyTypeEnum.EMAIL)
     @Excel(name = "邮件", width = 20, orderNum = "2")
     @ApiModelProperty("邮件")
@@ -51,6 +58,7 @@ public class SysUser implements Serializable {
     @ApiModelProperty("机构ID")
     private String depId;
 
+    @Range(min = 0, max = 2, message = "用户状态有误")
     @Dict(dicCode = "user_status")
     @ApiModelProperty("用户状态")
     private String status;

@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class UserController extends BaseController<SysUser, ISysUserService> {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页条数", required = true, dataType = "Integer", paramType = "query"),
     })
-    public CommonResponse selectByPage(SysUser sysUser,
+    public CommonResponse selectByPage(@Valid SysUser sysUser,
                                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         IPage<SysUser> page = baseService.selectByPage(sysUser, pageNo, pageSize);
