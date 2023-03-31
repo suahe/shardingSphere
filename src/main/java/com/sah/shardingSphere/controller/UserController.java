@@ -1,5 +1,6 @@
 package com.sah.shardingSphere.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sah.shardingSphere.aspect.annotation.AutoLog;
 import com.sah.shardingSphere.common.CommonResponse;
 import com.sah.shardingSphere.entity.SysUser;
@@ -39,6 +40,20 @@ public class UserController extends BaseController<SysUser, ISysUserService> {
 
     @Autowired
     private LoginService loginService;
+
+    @GetMapping("/selectByPage")
+    @NotAuthentication
+    @ApiOperation(value = "用户接口-分页查询用户列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", value = "页码", required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页条数", required = true, dataType = "Integer", paramType = "query"),
+    })
+    public CommonResponse selectByPage(SysUser sysUser,
+                                       @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        IPage<SysUser> page = baseService.selectByPage(sysUser, pageNo, pageSize);
+        return CommonResponse.ok(page);
+    }
 
     @AutoLog("根据账号获取用户")
     @GetMapping("/getUser/{username}")

@@ -1,6 +1,8 @@
 package com.sah.shardingSphere.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sah.shardingSphere.common.CacheConstant;
 import com.sah.shardingSphere.entity.SysUser;
@@ -10,6 +12,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author suahe
  * @date 2022/9/20
@@ -17,6 +21,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
+
+    @Override
+    public IPage<SysUser> selectByPage(SysUser sysUser, Integer pageNo, Integer pageSize) {
+        Page<SysUser> page = new Page<>(pageNo, pageSize);
+        List<SysUser> sysUserList = baseMapper.selectByPage(sysUser, page);
+        page.setRecords(sysUserList);
+        return page;
+    }
 
     @Override
     //@Cacheable(value = CacheConstant.SYS_CACHE_USER, key = "#username", unless = "#result == null")

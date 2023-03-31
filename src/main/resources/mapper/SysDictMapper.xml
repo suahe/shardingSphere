@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sah.shardingSphere.mapper.SysDictMapper">
+
+    <!--开启二级缓存-->
+    <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/>
+
+    <!--通过查询指定table的 text code key 获取字典值，可批量查询-->
+    <select id="queryTableDictTextByKeys" parameterType="String" resultType="com.sah.shardingSphere.model.DictModel">
+        select ${text} as "text", ${code} as "value" from ${table} where ${code} IN (
+        <foreach item="key" collection="keys" separator=",">
+            #{key}
+        </foreach>
+        )
+    </select>
+
+    <!-- 通过字典code获取字典数据，可批量查询 -->
+    <select id="queryManyDictByKeys" parameterType="String"  resultType="com.sah.shardingSphere.model.DictModelMany">
+        SELECT
+        dict.dict_code,
+        item.item_text AS "text",
+        item.item_value AS "value"
+        FROM
+        sys_dict_item item
+        INNER JOIN sys_dict dict ON dict.id = item.dict_id
+        WHERE dict.dict_code IN (
+        <foreach item="dictCode" collection="dictCodeList" separator=",">
+            #{dictCode}
+        </foreach>
+        )
+        AND item.item_value IN (
+        <foreach item="key" collection="keys" separator=",">
+            #{key}
+        </foreach>
+        )
+    </select>
+
+    <!--通过查询指定table的 text code key 获取字典值-->
+    <select id="queryTableDictTextByKey" parameterType="String" resultType="String">
+		   select ${text} as "text" from ${table} where ${code}= #{key}
+	</select>
+
+    <!-- 通过字典code获取字典数据 -->
+    <select id="queryDictTextByKey" parameterType="String"  resultType="String">
+		   select s.item_text from sys_dict_item s
+		   where s.dict_id = (select id from sys_dict where dict_code = #{code})
+		   and s.item_value = #{key}
+	</select>
+
+</mapper>

@@ -2,5 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sah.shardingSphere.mapper.SysUserMapper">
 
+    <select id="selectByPage" resultType="com.sah.shardingSphere.entity.SysUser">
+        select * from sys_user where 1 = 1
+        <if test="param.username != null and param.username != ''">
+            and username = #{param.username}
+        </if>
+    </select>
 
 </mapper>

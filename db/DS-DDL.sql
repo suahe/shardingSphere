@@ -15,14 +15,14 @@ CREATE TABLE `sys_user` (
   UNIQUE KEY `username_unique` (`username`) USING BTREE,
   UNIQUE KEY `mail_unique` (`mail`) USING BTREE,
   UNIQUE KEY `telephone_unique` (`telephone`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 CREATE TABLE `sys_user_role` (
   `id` varchar(32) NOT NULL  COMMENT '主键id',
   `user_id` varchar(32) NOT NULL COMMENT '用户名',
   `role_id` varchar(32) NOT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户和角色中间表';
 
 
 CREATE TABLE `sys_role` (
@@ -38,14 +38,14 @@ CREATE TABLE `sys_role` (
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `code_unique` (`code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
 
 CREATE TABLE `sys_role_menu` (
   `id` varchar(32) NOT NULL  COMMENT '主键id',
   `role_id` varchar(32) NOT NULL COMMENT '角色ID',
   `menu_id` varchar(32) NOT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色和菜单中间表';
 
 CREATE TABLE `sys_menu` (
   `id` varchar(32) NOT NULL  COMMENT '主键id',
@@ -63,7 +63,7 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单表';
 
 CREATE TABLE `sys_log` (
   `id` varchar(32) CHARACTER SET utf8mb4 NOT NULL COMMENT '主键id',
@@ -85,11 +85,43 @@ CREATE TABLE `sys_log` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `index_table_userid` (`userid`) USING BTREE,
-  KEY `index_logt_ype` (`log_type`) USING BTREE,
   KEY `index_operate_type` (`operate_type`) USING BTREE,
   KEY `index_log_type` (`log_type`) USING BTREE,
-  KEY `idx_sl_userid` (`userid`) USING BTREE,
-  KEY `idx_sl_log_type` (`log_type`) USING BTREE,
-  KEY `idx_sl_operate_type` (`operate_type`) USING BTREE,
-  KEY `idx_sl_create_time` (`create_time`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统日志表';
+  KEY `index_create_time` (`create_time`) USING BTREE
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统日志表';
+
+
+CREATE TABLE `sys_dict` (
+  `id` varchar(32) NOT NULL,
+  `dict_name` varchar(100) NOT NULL COMMENT '字典名称',
+  `dict_code` varchar(100) NOT NULL COMMENT '字典编码',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `del_flag` int(1) DEFAULT NULL COMMENT '删除状态',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `type` int(1) unsigned zerofill DEFAULT '0' COMMENT '字典类型0为string,1为number',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `indextable_dict_code` (`dict_code`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典表';
+
+
+CREATE TABLE `sys_dict_item` (
+  `id` varchar(32) NOT NULL,
+  `dict_id` varchar(32) DEFAULT NULL COMMENT '字典id',
+  `item_text` varchar(500) DEFAULT NULL COMMENT '字典项文本',
+  `item_value` varchar(100) NOT NULL COMMENT '字典项值',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `sort_order` int(10) DEFAULT NULL COMMENT '排序',
+  `status` int(11) DEFAULT NULL COMMENT '状态（1启用 0不启用）',
+  `create_by` varchar(32) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_by` varchar(32) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_table_dict_id` (`dict_id`) USING BTREE,
+  KEY `index_table_sort_order` (`sort_order`) USING BTREE,
+  KEY `index_table_dict_status` (`status`) USING BTREE,
+  KEY `idx_sdi_dict_val` (`dict_id`,`item_value`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典子项表';

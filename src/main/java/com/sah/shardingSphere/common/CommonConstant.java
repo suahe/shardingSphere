@@ -56,4 +56,9 @@ public class CommonConstant {
      * X_ACCESS_TOKEN
      */
     public static final String X_ACCESS_TOKEN = "X-Access-Token";
+
+    /**
+     * 字典翻译文本后缀
+     */
+    public static final String DICT_TEXT_SUFFIX = "_dictText";
 }
