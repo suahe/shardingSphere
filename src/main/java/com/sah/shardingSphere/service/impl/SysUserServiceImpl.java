@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sah.shardingSphere.common.CacheConstant;
 import com.sah.shardingSphere.entity.SysUser;
-import com.sah.shardingSphere.lock.annotation.JLock;
 import com.sah.shardingSphere.mapper.SysUserMapper;
 import com.sah.shardingSphere.service.ISysUserService;
 import org.springframework.cache.annotation.CacheEvict;
@@ -28,7 +27,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return this.getOne(wrapper);
     }
 
-    @CacheEvict(value= {CacheConstant.SYS_CACHE_USER}, allEntries=true)
+    //@CacheEvict(value= {CacheConstant.SYS_CACHE_USER}, allEntries=true)
+    @CacheEvict(value = CacheConstant.SYS_CACHE_USER, key = "#sysuser.username", allEntries = true)
     public boolean editUser(SysUser sysUser) {
 
         return true;
