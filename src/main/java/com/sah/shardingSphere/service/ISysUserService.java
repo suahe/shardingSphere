@@ -17,4 +17,11 @@ public interface ISysUserService extends IService<SysUser> {
      * @return
      */
     SysUser findByUsername(String username);
+
+    /**
+     * 编辑用户信息
+     *
+     * @return
+     */
+    boolean editUser(SysUser sysUser);
 }

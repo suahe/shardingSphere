@@ -8,10 +8,12 @@ import com.sah.shardingSphere.security.NotAuthentication;
 import com.sah.shardingSphere.security.model.LoginDTO;
 import com.sah.shardingSphere.security.model.LoginVO;
 import com.sah.shardingSphere.service.ISysUserService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ImportParams;
-import org.jeecgframework.poi.excel.entity.params.ExcelExportEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,12 +23,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author suahe
@@ -36,7 +35,7 @@ import java.util.stream.Collectors;
 @Api(value = "用户接口", tags = "用户接口")
 @RequestMapping("/user")
 @RestController
-public class UserController extends BaseController<SysUser, ISysUserService>{
+public class UserController extends BaseController<SysUser, ISysUserService> {
 
     @Autowired
     private LoginService loginService;
@@ -44,15 +43,24 @@ public class UserController extends BaseController<SysUser, ISysUserService>{
     @AutoLog("根据账号获取用户")
     @GetMapping("/getUser/{username}")
     @NotAuthentication
-    @ApiOperation(value="用户接口-获取用户信息")
-    public CommonResponse getUser(@ApiParam(name = "账号", value = "username", required = true) @PathVariable("username") String username) {
+    @ApiOperation(value = "用户接口-获取用户信息")
+    @ApiImplicitParam(paramType = "path", name = "username", value = "账号", required = true, dataType = "String")
+    public CommonResponse getUser(@PathVariable("username") String username) {
         SysUser sysUser = baseService.findByUsername(username);
         return CommonResponse.ok(sysUser);
     }
 
+    @PutMapping
+    @NotAuthentication
+    @ApiOperation(value = "用户接口-编辑用户信息")
+    public CommonResponse editUser(@RequestBody SysUser sysUser) {
+        baseService.editUser(sysUser);
+        return CommonResponse.ok();
+    }
+
     @PreAuthorize("@ssc.hasPermission('sah:user:query')")
     @PostMapping("/helloWord")
-    @ApiOperation(value="用户接口-测试权限")
+    @ApiOperation(value = "用户接口-测试权限")
     public String hellWord() {
         return "hello word";
     }
@@ -78,8 +86,8 @@ public class UserController extends BaseController<SysUser, ISysUserService>{
     }
 
     @PostMapping(value = "/importExcel")
-    @ApiOperation(value = "导入用户数据Excel")
     @NotAuthentication
+    @ApiOperation(value = "用户接口-导入用户数据Excel")
     public CommonResponse<?> importExcel(HttpServletRequest request) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
@@ -99,9 +107,9 @@ public class UserController extends BaseController<SysUser, ISysUserService>{
         return CommonResponse.error("File import failure");
     }
 
-    @ApiOperation(value = "导出用户数据Excel")
     @GetMapping(value = "/exportXls")
     @NotAuthentication
+    @ApiOperation(value = "用户接口-导出用户数据Excel")
     public ModelAndView exportXls(HttpServletRequest request) {
         List<SysUser> userList = baseService.list();
         return super.exportEntityXls("用户数据", SysUser.class, userList);
