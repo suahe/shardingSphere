@@ -87,6 +87,19 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+# 邮箱配置
+  mail:
+    host: hwhzsmtp.qiye.163.com
+    username: manager@harmonicchannel.cn
+    password: Hmyy810920
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
 
 mybatis-plus:
   #maper映射文件路径
