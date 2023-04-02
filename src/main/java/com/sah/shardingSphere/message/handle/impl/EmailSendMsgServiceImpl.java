@@ -1,12 +1,14 @@
 package com.sah.shardingSphere.message.handle.impl;
 
-import com.sah.shardingSphere.message.handle.ISendMsgHandle;
+import com.sah.shardingSphere.message.enums.SendMsgTypeEnum;
+import com.sah.shardingSphere.message.handle.ISendMsgService;
 import com.sah.shardingSphere.util.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import com.sah.shardingSphere.message.entity.StaticConfig;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -17,16 +19,22 @@ import javax.mail.internet.MimeMessage;
  * @ApiNote
  */
 @Slf4j
-public class EmailSendMsgHandle implements ISendMsgHandle {
+@Service
+public class EmailSendMsgServiceImpl implements ISendMsgService {
 
     static String emailFrom;
 
     public static void setEmailFrom(String emailFrom) {
-        EmailSendMsgHandle.emailFrom = emailFrom;
+        EmailSendMsgServiceImpl.emailFrom = emailFrom;
     }
 
     @Override
-    public void SendMsg(String es_receiver, String es_title, String es_content) {
+    public boolean support(int type) {
+        return type == SendMsgTypeEnum.EMAIL.getType();
+    }
+
+    @Override
+    public void sendMsg(String es_receiver, String es_title, String es_content) {
         JavaMailSender mailSender = (JavaMailSender) SpringContextUtil.getBean("mailSender");
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = null;

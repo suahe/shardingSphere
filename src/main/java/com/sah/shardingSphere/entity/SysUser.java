@@ -84,6 +84,6 @@ public class SysUser implements Serializable {
 
     @Bit(digit = 3)
     @TableField(exist = false)
-    @ApiModelProperty("double位数测试字段")
+    @ApiModelProperty(value = "double位数测试字段", example = "0.11")
     private Double num;
 }

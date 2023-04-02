@@ -11,6 +11,7 @@ import com.sah.shardingSphere.service.ISysUserService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     //@CacheEvict(value= {CacheConstant.SYS_CACHE_USER}, allEntries=true)
     @CacheEvict(value = CacheConstant.SYS_CACHE_USER, key = "#sysuser.username", allEntries = true)
+    @Transactional(rollbackFor = Exception.class)
     public boolean editUser(SysUser sysUser) {
 
         return true;
