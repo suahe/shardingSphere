@@ -23,15 +23,15 @@ public class RedisDelayQueue {
 
     @PostConstruct
     public void init() {
-        Thread consumer = new Thread() {
+        Thread c = new Thread() {
             public void run() {
-                startConsumer();
+                consumer();
             }
         };
-        consumer.start();
+        c.start();
     }
 
-    public void startConsumer() {
+    public void consumer() {
         while (true) {
             //只取一条
             Set<Object> set = redisUtil.rangeByScore(CacheConstant.REDIS_DELAY_QUEUE_TEST, 0, System.currentTimeMillis(), 0, 1);
@@ -41,11 +41,11 @@ public class RedisDelayQueue {
                     long b = redisUtil.zRem(CacheConstant.REDIS_DELAY_QUEUE_TEST, v.toString());
                     if (b > 0) {//分布式抢到任务
                         try {
-                            log.info("消费信息：" + v.toString());
+                            log.info("RedisDelayQueue consumer method consumer info：{}", v.toString());
                             RedisDelayQueueDTO redisDelayQueueDTO = JSON.parseObject(v.toString(), RedisDelayQueueDTO.class);
                             redisUtil.zRem(CacheConstant.REDIS_DELAY_QUEUE_TEST + redisDelayQueueDTO.getConsumerId(), v.toString());
                         } catch (Exception e) {
-                            log.error("redis zRem:{}异常，异常信息:{}", CacheConstant.REDIS_DELAY_QUEUE_TEST, e);
+                            log.error("redis zRem:{} error, error info:{}", CacheConstant.REDIS_DELAY_QUEUE_TEST, e);
                         }
                     }
                 }
@@ -54,7 +54,7 @@ public class RedisDelayQueue {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    log.error("RedisDelayingQueue startConsumer error:{}", e);
+                    log.error("RedisDelayingQueue consumer error:{}", e);
                 }
             }
         }
