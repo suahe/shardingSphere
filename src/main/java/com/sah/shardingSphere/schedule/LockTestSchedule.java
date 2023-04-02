@@ -1,11 +1,10 @@
-package com.sah.shardingSphere.scheduled;
+package com.sah.shardingSphere.schedule;
 
 import com.sah.shardingSphere.lock.annotation.JLock;
 import com.sah.shardingSphere.lock.annotation.JRepeat;
 import com.sah.shardingSphere.lock.client.RedissonLockClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class LockTestScheduled {
+public class LockTestSchedule {
 
     @Autowired
     private RedissonLockClient redissonLockClient;

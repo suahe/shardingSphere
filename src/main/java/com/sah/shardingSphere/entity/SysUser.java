@@ -2,9 +2,11 @@ package com.sah.shardingSphere.entity;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sah.shardingSphere.aspect.annotation.Dict;
+import com.sah.shardingSphere.serializer.Bit;
 import com.sah.shardingSphere.serializer.PrivacyEncrypt;
 import com.sah.shardingSphere.serializer.PrivacyTypeEnum;
 import io.swagger.annotations.ApiModel;
@@ -79,4 +81,9 @@ public class SysUser implements Serializable {
 
     @ApiModelProperty("更新人")
     private String updateBy;
+
+    @Bit(digit = 3)
+    @TableField(exist = false)
+    @ApiModelProperty("double位数测试字段")
+    private Double num;
 }

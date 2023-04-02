@@ -28,6 +28,7 @@ import javax.validation.Valid;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author suahe
@@ -63,6 +64,9 @@ public class UserController extends BaseController<SysUser, ISysUserService> {
     @ApiImplicitParam(paramType = "path", name = "username", value = "账号", required = true, dataType = "String")
     public CommonResponse getUser(@PathVariable("username") String username) {
         SysUser sysUser = baseService.findByUsername(username);
+        if(Objects.nonNull(sysUser)) {
+            sysUser.setNum(0.123455D);
+        }
         return CommonResponse.ok(sysUser);
     }
 
