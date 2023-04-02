@@ -24,6 +24,9 @@ public class BitSerializer extends JsonSerializer<Object> implements ContextualS
     @Override
     public void serialize(Object origin, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         log.info("BitSerializer serialize origin:{}, digit:{}", origin, digit);
+        if(Objects.isNull(origin)) {
+            return;
+        }
         DecimalFormat df = new DecimalFormat(getBitFm(digit));
         Double d = Double.parseDouble(origin.toString());
         jsonGenerator.writeString(df.format(d));

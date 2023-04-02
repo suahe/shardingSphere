@@ -21,4 +21,9 @@ public class CacheConstant {
      * 字典信息缓存（含禁用的字典项）
      */
     public static final String SYS_CACHE_DICT = "sys:cache:dict";
+
+    /**
+     * redis队列测试
+     */
+    public static final String REDIS_DELAY_QUEUE_TEST = "redis:queue:test:";
 }
