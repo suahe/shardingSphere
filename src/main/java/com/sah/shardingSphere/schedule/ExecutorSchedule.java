@@ -2,7 +2,6 @@ package com.sah.shardingSphere.schedule;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.collection.SynchronizedCollection;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -27,10 +26,12 @@ public class ExecutorSchedule {
         List<String> list = Collections.synchronizedList(new ArrayList<>());
         List<Future> futureList = new ArrayList<>();
         int length = 10;
+        //TODO 如果有异常，整个定时任务不执行了，future无返回
         CountDownLatch latch = new CountDownLatch(length);
         for (int i = 0; i < length; i++) {
             int finalI = i;
             Future<?> future = executor.submit(() -> {
+//                    int y = 0/ 0;
                 list.add(String.valueOf(finalI));
                 latch.countDown();
             });
@@ -40,7 +41,7 @@ public class ExecutorSchedule {
             latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.error("ExecutorSchedule executor error:{}", e);
+             log.error("ExecutorSchedule executor error:{}", e);
         }
         List<String> finalList = list.stream().sorted(String::compareTo).collect(Collectors.toList());
         log.info("ExecutorSchedule executor final result finalList:{}, futureList:{}",
