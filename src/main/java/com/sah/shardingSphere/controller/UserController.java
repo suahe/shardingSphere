@@ -50,7 +50,7 @@ public class UserController extends BaseController<SysUser, ISysUserService> {
             @ApiImplicitParam(name = "pageNo", value = "页码", required = true, dataType = "Integer", paramType = "query"),
             @ApiImplicitParam(name = "pageSize", value = "每页条数", required = true, dataType = "Integer", paramType = "query"),
     })
-    public CommonResponse selectByPage(@Valid SysUser sysUser,
+    public CommonResponse selectByPage(SysUser sysUser,
                                        @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         IPage<SysUser> page = baseService.selectByPage(sysUser, pageNo, pageSize);
@@ -73,7 +73,7 @@ public class UserController extends BaseController<SysUser, ISysUserService> {
     @PutMapping
     @NotAuthentication
     @ApiOperation(value = "用户接口-编辑用户信息")
-    public CommonResponse editUser(@RequestBody SysUser sysUser) {
+    public CommonResponse editUser(@Valid @RequestBody SysUser sysUser) {
         baseService.editUser(sysUser);
         return CommonResponse.ok();
     }
