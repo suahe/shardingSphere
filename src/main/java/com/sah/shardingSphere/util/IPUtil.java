@@ -1,9 +1,14 @@
 package com.sah.shardingSphere.util;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.*;
 
 @Slf4j
 public class IPUtil {
@@ -39,4 +44,45 @@ public class IPUtil {
         return ip;
     }
 
+    public static boolean isDomesticIp(String ip) {
+        try {
+            URL url = new URL("http://ip-api.com/json/" + ip + "?lang=en");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            reader.close();
+            conn.disconnect();
+
+
+            // 解析返回的JSON数据
+            JSONObject jsonData = JSONObject.parseObject(sb.toString());
+            String country = jsonData.getString("country");
+            return "China".equals(country);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        String domesticIp = "220.250.41.81";
+        String foreignIp = "8.8.8.8";
+
+        if (isDomesticIp(domesticIp)) {
+            System.out.println(domesticIp + " is a domestic IP");
+        } else {
+            System.out.println(domesticIp + " is not a domestic IP");
+        }
+
+        if (isDomesticIp(foreignIp)) {
+            System.out.println(foreignIp + " is a domestic IP");
+        } else {
+            System.out.println(foreignIp + " is not a domestic IP");
+        }
+    }
 }
