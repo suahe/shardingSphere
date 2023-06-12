@@ -17,7 +17,6 @@ public class MyInitializingBean implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         //bean初始化之后被调用
-        System.out.println("bean初始化后被调用");
         name = "张三";
     }
 }
