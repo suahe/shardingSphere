@@ -124,7 +124,7 @@ logLevel: info
 
 common:
   redisson:
-    address: 127.0.0.1:6379
+    address: 192.168.72.128:6379
     password:
     type: STANDALONE
     enabled: true

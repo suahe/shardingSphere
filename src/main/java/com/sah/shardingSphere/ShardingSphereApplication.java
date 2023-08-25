@@ -7,11 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.InetAddress;
 
 @Slf4j
+@EnableRetry
 @EnableScheduling
 @MapperScan("com.sah.shardingSphere.mapper")
 @SpringBootApplication

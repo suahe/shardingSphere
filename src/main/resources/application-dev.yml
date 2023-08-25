@@ -33,7 +33,7 @@ spring:
         validationQuery: SELECT 1
         url: jdbc:mysql://127.0.0.1:3306/test_ds1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
         username: root
-        password: 123456
+        password: root
     # 默认的分库策略：id取模
     sharding:
       # 指定不需要分表的普通表使用的数据源
