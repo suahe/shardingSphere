@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
      * 处理自定义异常
      */
     @ExceptionHandler(BusinessException.class)
-    public CommonResponse<?> handleRRException(BusinessException e) {
+    public CommonResponse<?> handleBusinessException(BusinessException e) {
         log.error(e.getMessage(), e);
         return CommonResponse.error(e.getMessage());
     }
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
      * 处理redis异常
      */
     @ExceptionHandler(RedisException.class)
-    public CommonResponse<?> handlePoolException(RedisException e) {
+    public CommonResponse<?> handleRedisException(RedisException e) {
         log.error(e.getMessage(), e);
         return CommonResponse.error(e.getMessage());
     }
@@ -43,7 +43,16 @@ public class GlobalExceptionHandler {
      * 处理锁异常
      */
     @ExceptionHandler(LockException.class)
-    public CommonResponse<?> handlePoolException(LockException e) {
+    public CommonResponse<?> handleLockException(LockException e) {
+        log.error(e.getMessage(), e);
+        return CommonResponse.error(e.getMessage());
+    }
+
+    /**
+     * 处理限流异常异常
+     */
+    @ExceptionHandler(SentinelException.class)
+    public CommonResponse<?> handleSentinelException(SentinelException e) {
         log.error(e.getMessage(), e);
         return CommonResponse.error(e.getMessage());
     }
