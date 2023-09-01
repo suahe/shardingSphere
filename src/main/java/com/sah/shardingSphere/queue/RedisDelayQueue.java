@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.sah.shardingSphere.common.CacheConstant;
 import com.sah.shardingSphere.model.RedisDelayQueueDTO;
 import com.sah.shardingSphere.redis.util.RedisUtil;
+import com.sah.shardingSphere.util.ThreadPoolUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,20 +20,10 @@ import java.util.Set;
  */
 @Slf4j
 @Component
-public class RedisDelayQueue {
+public class RedisDelayQueue implements ApplicationRunner {
 
     @Autowired
     private RedisUtil redisUtil;
-
-    @PostConstruct
-    public void init() {
-        Thread c = new Thread() {
-            public void run() {
-                consumer();
-            }
-        };
-        c.start();
-    }
 
     public void consumer() {
         while (true) {
@@ -58,5 +52,10 @@ public class RedisDelayQueue {
                 }
             }
         }
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        ThreadPoolUtil.getPool().execute(this::consumer);
     }
 }

@@ -27,11 +27,6 @@ public class AsyncThread extends Thread {
     private static ExecutorService executorService = Executors.newCachedThreadPool();
 
     public static void fun() {
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                log.info("执行业务逻辑...");
-            }
-        });
+        executorService.submit(() -> log.info("执行业务逻辑..."));
     }
 }

@@ -1,3 +1,15 @@
 spring:
   profiles:
     active: dev
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: sah_group
+    send-message-timeout: 30000
+
+sah:
+  data:
+    rocketmq:
+      common-topic: common_topic
+      common-group: common-group

@@ -266,7 +266,7 @@ public class RedisUtil {
         }
     }
 
-    public boolean zAdd(String key, Object value, Double score) {
+    public boolean zAdd(String key, Object value, long score) {
         try {
             redisTemplate.opsForZSet().add(key, value, score);
             return true;
@@ -276,7 +276,7 @@ public class RedisUtil {
         }
     }
 
-    public Set rangeByScore(String key, double min, double max) {
+    public Set rangeByScore(String key, long min, long max) {
         try {
             return redisTemplate.opsForZSet().rangeByScore(key, min, max);
         } catch (Exception e) {
@@ -285,7 +285,7 @@ public class RedisUtil {
         }
     }
 
-    public Set rangeByScore(String key, double min, double max, long offset, long count) {
+    public Set rangeByScore(String key, long min, long max, long offset, long count) {
         try {
             return redisTemplate.opsForZSet().rangeByScore(key, min, max, offset, count);
         } catch (Exception e) {
