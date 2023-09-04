@@ -1,4 +1,4 @@
-package com.sah.shardingSphere.queue;
+package com.sah.shardingSphere.redisDelay;
 
 import com.alibaba.fastjson.JSON;
 import com.sah.shardingSphere.common.CacheConstant;
@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Slf4j
 @Component
-public class RedisDelayQueue implements ApplicationRunner {
+public class RedisDelayQueueDemo implements ApplicationRunner {
 
     @Autowired
     private RedisUtil redisUtil;

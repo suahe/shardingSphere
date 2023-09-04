@@ -12,6 +12,7 @@ import com.sah.shardingSphere.queue.rocketmq.RocketmqCustomProperties;
 import com.sah.shardingSphere.queue.trigger.TimeTrigger;
 import com.sah.shardingSphere.queue.util.DelayQueueTools;
 import com.sah.shardingSphere.redis.util.RedisUtil;
+import com.sah.shardingSphere.redisDelay.RedisDelayQueue;
 import com.sah.shardingSphere.security.NotAuthentication;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,8 @@ public class RedisQueueController {
     private RedisUtil redisUtil;
     @Autowired
     private TimeTrigger timerTrigger;
+    @Autowired
+    private RedisDelayQueue redisDelayQueue;
 
 
     @PostMapping("/addQueue")
@@ -61,5 +64,18 @@ public class RedisQueueController {
                 rocketmqCustomProperties.getCommonTopic());
         timerTrigger.addDelay(timeTriggerMsg);
         return CommonResponse.ok();
+    }
+
+    @PostMapping("/redisDelayQueue")
+    @ApiOperation("测试通用redis延迟队列")
+    @NotAuthentication
+    public CommonResponse redisDelayQueue(@RequestBody RedisDelayQueueDTO redisDelayQueueDTO) {
+        long l = System.currentTimeMillis();
+        l = l + 60 * 1000;
+        boolean bo = redisDelayQueue.addQueue(JSONObject.toJSONString(redisDelayQueueDTO), l);
+        if (bo) {
+            return CommonResponse.ok();
+        }
+        return CommonResponse.error("addQueue fail");
     }
 }
