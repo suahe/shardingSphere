@@ -6,7 +6,7 @@ import com.sah.shardingSphere.redis.model.BaseMap;
 /**
  * 自定义消息监听
  */
-public interface RedisListerer {
+public interface RedisListener {
 
     void onMessage(BaseMap message);
 

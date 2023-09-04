@@ -1,7 +1,7 @@
 package com.sah.shardingSphere.redis.websocket;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.sah.shardingSphere.redis.listener.RedisListerer;
+import com.sah.shardingSphere.redis.listener.RedisListener;
 import com.sah.shardingSphere.redis.model.BaseMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class SocketHandler implements RedisListerer {
+public class SocketHandler implements RedisListener {
 
     @Autowired
     private WebSocket webSocket;

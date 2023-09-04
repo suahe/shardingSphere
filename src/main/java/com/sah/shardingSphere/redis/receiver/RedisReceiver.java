@@ -3,7 +3,7 @@ package com.sah.shardingSphere.redis.receiver;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.sah.shardingSphere.redis.common.RedisConstant;
-import com.sah.shardingSphere.redis.listener.RedisListerer;
+import com.sah.shardingSphere.redis.listener.RedisListener;
 import com.sah.shardingSphere.redis.model.BaseMap;
 import com.sah.shardingSphere.util.SpringContextUtil;
 import lombok.Data;
@@ -24,7 +24,7 @@ public class RedisReceiver {
         Object handlerName = params.get(RedisConstant.HANDLER_NAME);
         boolean exists = SpringContextUtil.getApplicationContext().containsBean(handlerName.toString());
         if(exists){
-            RedisListerer messageListener = SpringContextUtil.getBean(handlerName.toString(), RedisListerer.class);
+            RedisListener messageListener = SpringContextUtil.getBean(handlerName.toString(), RedisListener.class);
             if (ObjectUtil.isNotEmpty(messageListener)) {
                 messageListener.onMessage(params);
             }
