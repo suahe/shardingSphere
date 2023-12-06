@@ -3,6 +3,13 @@ package com.sah.shardingSphere.redis.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sah.shardingSphere.enums.EnumCode;
+import com.sah.shardingSphere.json.EnumCodeDeserializer;
+import com.sah.shardingSphere.json.EnumCodeSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -41,6 +48,22 @@ public class RedisConfig extends CachingConfigurerSupport {
         log.info(" --- redis config init --- ");
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = jacksonSerializer();
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+
+        //Redis增加枚举转换
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        //指定输入的类型
+        objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,
+                ObjectMapper.DefaultTyping.NON_FINAL);
+        //如果java.time包下Json报错,添加如下两行代码
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.registerModule(new JavaTimeModule());
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addSerializer(EnumCode.class, new EnumCodeSerializer());
+        simpleModule.addDeserializer(EnumCode.class, new EnumCodeDeserializer());
+        objectMapper.registerModule(simpleModule);
+        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
+
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         RedisSerializer<?> stringSerializer = new StringRedisSerializer();
         // key序列化
