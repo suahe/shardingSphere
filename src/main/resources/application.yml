@@ -13,3 +13,4 @@ sah:
     rocketmq:
       common-topic: common_topic
       common-group: common-group
+

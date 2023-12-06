@@ -114,6 +114,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 开启二级缓存
     cache-enabled: true
+    default-enum-type-handler: com.sah.shardingSphere.mybatis.hander.MybatisEnumTypeHandler
 # 开启日志
 logging:
   config: classpath:logback-level.xml

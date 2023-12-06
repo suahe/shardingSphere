@@ -11,6 +11,7 @@ CREATE TABLE `sys_user` (
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `gender` varchar(5) DEFAULT NULL COMMENT '性别',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `username_unique` (`username`) USING BTREE,
   UNIQUE KEY `mail_unique` (`mail`) USING BTREE,

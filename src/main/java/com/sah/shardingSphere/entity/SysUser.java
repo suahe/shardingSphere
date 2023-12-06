@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sah.shardingSphere.aspect.annotation.Dict;
+import com.sah.shardingSphere.enums.GenderEnum;
 import com.sah.shardingSphere.serializer.Bit;
 import com.sah.shardingSphere.serializer.PrivacyEncrypt;
 import com.sah.shardingSphere.serializer.PrivacyTypeEnum;
@@ -42,7 +43,7 @@ public class SysUser implements Serializable {
     @ApiModelProperty("账号")
     private String username;
 
-    @Pattern(regexp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$", message = "手机号格式有误")
+//    @Pattern(regexp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$", message = "手机号格式有误")
     @PrivacyEncrypt(type = PrivacyTypeEnum.PHONE)
     @Excel(name = "手机号", width = 20, orderNum = "1")
     @ApiModelProperty("手机号")
@@ -86,4 +87,7 @@ public class SysUser implements Serializable {
     @TableField(exist = false)
     @ApiModelProperty(value = "double位数测试字段")
     private Double num;
+
+    @ApiModelProperty(value = "性别")
+    private GenderEnum gender;
 }
